@@ -35,9 +35,8 @@ void printDir()
     printf("%s@%s-%s$ ", user, host, path);
 }
 
-char* handleInput(char *inputString){
+void splitInput(char *inputString,char* tokens[]){
     char *token = strtok(inputString," ");
-    char *tokens[10];
     int counter = 0;
     while (token != NULL)
     {
@@ -45,22 +44,34 @@ char* handleInput(char *inputString){
         token = strtok(NULL, " ");
         counter++;
     }
-    return tokens;
+}
+
+void handleTokens(char* tokens[]){
+    if(!strcmp(tokens[0],"فهرست")){
+        system("ls");
+    }
 }
 
 
 int main()
 {
     char inputString[MAXCOM];
-
+    char *tokens[10];
     while (1)
     {
+        //print information
         printDir();
 
+        //check if input is valid
         if (!takeInput(inputString))
             continue;
 
-        handleInput(inputString);
+        //split input to tokens to process
+        splitInput(inputString,tokens);
+
+        //main token handler
+        handleTokens(tokens);
+        
     }
     return 0;
 }
