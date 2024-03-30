@@ -35,8 +35,9 @@ void printDir()
     printf("%s@%s-%s$ ", user, host, path);
 }
 
-void splitInput(char *inputString,char* tokens[]){
-    char *token = strtok(inputString," ");
+void splitInput(char *inputString, char *tokens[])
+{
+    char *token = strtok(inputString, " ");
     int counter = 0;
     while (token != NULL)
     {
@@ -46,12 +47,39 @@ void splitInput(char *inputString,char* tokens[]){
     }
 }
 
-void handleTokens(char* tokens[]){
-    if(!strcmp(tokens[0],"فهرست")){
-        system("ls");
+void handleTokens(char *tokens[])
+{
+    if (!strcmp(tokens[0], "فهرست"))
+    {
+        char command[100];
+        sprintf(command, "ls %s", tokens[1]);
+        system(command);
+    }
+    else if (!strcmp(tokens[0], "برو"))
+    {
+        char command[100];
+        sprintf(command, "cd %s", tokens[1]);
+        system(command);
+    }
+    else if (!strcmp(tokens[0], "محتوا"))
+    {
+        char command[100];
+        sprintf(command, "cat %s", tokens[1]);
+        system(command);
+    }
+    else if (!strcmp(tokens[1], ">"))
+    {
+        char command[100];
+        sprintf(command, "%s > %s", tokens[0], tokens[2]);
+        system(command);
+    }
+    else if (!strcmp(tokens[0], "فهرستـمخفی"))
+    {
+        char command[100];
+        sprintf(command, "ls %s | sed 's/......$/______/g'", tokens[1]);
+        system(command);
     }
 }
-
 
 int main()
 {
@@ -59,19 +87,18 @@ int main()
     char *tokens[10];
     while (1)
     {
-        //print information
+        // print information
         printDir();
 
-        //check if input is valid
+        // check if input is valid
         if (!takeInput(inputString))
             continue;
 
-        //split input to tokens to process
-        splitInput(inputString,tokens);
+        // split input to tokens to process
+        splitInput(inputString, tokens);
 
-        //main token handler
+        // main token handler
         handleTokens(tokens);
-        
     }
     return 0;
 }
