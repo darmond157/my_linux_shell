@@ -5,9 +5,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-#define MAXCOM 1024 // max number of letters to be supported
-#define MAXLIST 10  // max number of commands to be supported
-
 int takeInput(char *str)
 {
     char *buf = readline("");
@@ -79,15 +76,38 @@ void handleTokens(char *tokens[])
         sprintf(command, "ls %s | sed 's/......$/______/g'", tokens[1]);
         system(command);
     }
+    else if (!strcmp(tokens[0], "تنظیم"))
+    {
+        char command[100];
+        sprintf(command, "%s=%s", tokens[1], tokens[3]);
+        system(command);
+    }
+    else if (!strcmp(tokens[0], "تنظیمات"))
+    {
+        char command[100];
+        sprintf(command, "echo $%s", tokens[1]);
+        system(command);
+    }
+    else if (!strcmp(tokens[1], "&"))
+    {
+        char command[100];
+        sprintf(command, "%s &", tokens[0]);
+        system(command);
+    }
+    else if (tokens[0][0] == '$')
+    {
+        system(tokens[0]);
+    }
 }
 
 int main()
 {
-    char inputString[MAXCOM];
-    char *tokens[10];
+    char inputString[1024];
+    char *tokens[5];
+
     while (1)
     {
-        // print information
+        // print shell information
         printDir();
 
         // check if input is valid
@@ -100,5 +120,6 @@ int main()
         // main token handler
         handleTokens(tokens);
     }
+
     return 0;
 }
