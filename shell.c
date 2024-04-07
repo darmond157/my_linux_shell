@@ -78,15 +78,11 @@ void handleTokens(char *tokens[])
     }
     else if (!strcmp(tokens[0], "تنظیم"))
     {
-        char command[100];
-        sprintf(command, "%s=%s", tokens[1], tokens[3]);
-        system(command);
+        setenv(tokens[1], tokens[3], 0);
     }
     else if (!strcmp(tokens[0], "تنظیمات"))
     {
-        char command[100];
-        sprintf(command, "echo $%s", tokens[1]);
-        system(command);
+        printf("%s\n",getenv(tokens[1]));
     }
     else if (!strcmp(tokens[1], "&"))
     {
